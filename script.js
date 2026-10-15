@@ -306,21 +306,24 @@ function startLockoutCountdown() {
    Sign-in loading screen
 
    Runs only after the credentials have already been accepted, so it
-   holds no authentication logic of its own. The truck drives through a
-   scrolling landscape (parallax layers, fixed sun). It moves as one
-   unit; the tyre circles are never transformed, only the small hub
-   group inside each tyre rotates.
+   holds no authentication logic of its own. A school bus full of
+   children drives through a scrolling landscape (parallax layers,
+   fixed sun) towards Medhavi Skills University. The university rides
+   in with the road and the road slows to a stop exactly when the
+   entrance reaches the bus, so the bus parks in front of the college.
+   The bus moves as one unit; the tyre circles are never transformed,
+   only the small hub group inside each tyre rotates.
    ------------------------------------------------------------ */
 
-const LOAD_DRIVE_MS   = 3000;   // truck crosses the road
-const LOAD_CONFIRM_MS = 800;    // "Authenticated" is held on screen
+const LOAD_DRIVE_MS   = 3600;   // bus drives to the university and stops
+const LOAD_CONFIRM_MS = 1100;   // "Authenticated" is held on screen, children wave
 const LOAD_FADE_MS    = 300;    // fade in, and fade into the portal
-/* total from clicking Sign in ≈ 5.1s */
+/* total from clicking Sign in ≈ 6s */
 
 const LOAD_PHASES = [
   { at:  0, sub: "Preparing your session" },
   { at: 40, sub: "Checking access rights" },
-  { at: 78, sub: "Almost ready" }
+  { at: 75, sub: "Arriving at Medhavi Skills University" }
 ];
 
 function easeInOutCubic(t) {
@@ -345,28 +348,79 @@ function paintScenery(layers, worldX, seconds) {
 }
 
 function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-function easeInCubic(t)  { return t * t * t; }
 
 /*
    The drive, in three parts:
-     0.00 – 0.20  truck rolls in from the left while the world speeds up
-     0.20 – 0.82  truck cruises; trees, hills, mountains and road stream past
-     0.82 – 1.00  truck accelerates away off the right edge
+     0.00 – 0.18  bus rolls in from the left while the world speeds up
+     0.18 – 0.60  bus cruises; trees, hills, mountains and road stream past,
+                  and the university appears on the right
+     0.60 – 1.00  the road brakes smoothly to a stop; the university glides
+                  into place and the bus is parked at its entrance
    The sun is never moved.
 */
-const ENTER_END  = 0.20;
-const EXIT_START = 0.82;
-const WORLD_SPEED = 340;          // px/s of road passing under the truck at cruise
+const ENTER_END   = 0.18;
+const BRAKE_START = 0.60;
+const WORLD_SPEED = 340;          // px/s of road passing under the bus at cruise
 const WHEEL_RADIUS_PX = 9;        // in SVG units = px at desktop size
+
+/* the campus entrance door sits at this fraction of the campus width
+   (door centre x=198 in a 360-wide drawing) */
+const CAMPUS_DOOR_AT = 198 / 360;
+/* the bus door sits at this fraction of the bus width (x=82.5 of 120) */
+const BUS_DOOR_AT    = 82.5 / 120;
+
+/* road speed (px/s) at time fraction t */
+function worldSpeedAt(t) {
+  if (t < ENTER_END)   return WORLD_SPEED * (0.35 + 0.65 * easeOutCubic(t / ENTER_END));
+  if (t < BRAKE_START) return WORLD_SPEED;
+  const u = (t - BRAKE_START) / (1 - BRAKE_START);
+  return WORLD_SPEED * Math.pow(1 - u, 2);          // smooth stop, zero at the end
+}
+
+/* distance the road has travelled by time fraction t — precomputed once so
+   the road, the university and the wheels always agree with each other */
+const ROAD_STEPS = 600;
+const ROAD_TABLE = (() => {
+  const table = new Float64Array(ROAD_STEPS + 1);
+  const dtSec = LOAD_DRIVE_MS / 1000 / ROAD_STEPS;
+  for (let i = 1; i <= ROAD_STEPS; i++) {
+    const tMid = (i - 0.5) / ROAD_STEPS;
+    table[i] = table[i - 1] + worldSpeedAt(tMid) * dtSec;
+  }
+  return table;
+})();
+function roadDistanceAt(t) {
+  const f = Math.min(Math.max(t, 0), 1) * ROAD_STEPS;
+  const i = Math.floor(f);
+  if (i >= ROAD_STEPS) return ROAD_TABLE[ROAD_STEPS];
+  return ROAD_TABLE[i] + (ROAD_TABLE[i + 1] - ROAD_TABLE[i]) * (f - i);
+}
+const ROAD_TOTAL = ROAD_TABLE[ROAD_STEPS];
 
 function driveTruck() {
   return new Promise((resolve) => {
+    const campus     = $("#signinCampus");
     const truckWidth = el.loadTruck.getBoundingClientRect().width || 120;
     const trackWidth = el.loadTrack.getBoundingClientRect().width;
-    const cruiseX = trackWidth * 0.40 + truckWidth * 0.5;   // parked a little left of centre
-    const endX    = trackWidth + truckWidth * 1.1;           // just past the right edge
+    const campusWidth = campus ? (campus.getBoundingClientRect().width || 0) : 0;
     const layers  = sceneryLayers();
     const svgScale = truckWidth / 120;                       // wheels shrink on mobile
+
+    // where things come to rest: the university near the right edge, and the
+    // bus parked with its door lined up with the university's front door
+    const margin       = Math.max(6, trackWidth * 0.015);
+    const campusRestX  = trackWidth - campusWidth - margin;
+    const doorX        = campusRestX + campusWidth * CAMPUS_DOOR_AT;
+    const busRestLeft  = Math.max(8, doorX - truckWidth * BUS_DOOR_AT);
+    // the bus element starts one bus-width off the left edge (CSS left:-width),
+    // so its translate value is its on-screen left plus its own width
+    const parkX        = busRestLeft + truckWidth;
+
+    const placeCampus = (roadDone) => {
+      if (!campus) return;
+      const x = campusRestX + (ROAD_TOTAL - roadDone);
+      campus.style.transform = `translateX(${x.toFixed(1)}px)`;
+    };
 
     let lastSub = "";
 
@@ -387,18 +441,14 @@ function driveTruck() {
       }
     };
 
-    const truckXAt = (t) => {
-      if (t < ENTER_END)   return cruiseX * easeOutCubic(t / ENTER_END);
-      if (t < EXIT_START)  return cruiseX;
-      return cruiseX + (endX - cruiseX) * easeInCubic((t - EXIT_START) / (1 - EXIT_START));
-    };
-    const worldSpeedAt = (t) =>   // ramps up while the truck rolls in, then steady
-      WORLD_SPEED * (t < ENTER_END ? 0.35 + 0.65 * easeOutCubic(t / ENTER_END) : 1);
+    const busXAt = (t) =>
+      t < ENTER_END ? parkX * easeOutCubic(t / ENTER_END) : parkX;
 
-    // reduced motion: a still landscape, truck parked on the road, progress only
+    // reduced motion: a still landscape, bus already parked at the university
     if (prefersReducedMotion) {
-      el.loadTruck.style.transform = `translateX(${cruiseX}px)`;
+      el.loadTruck.style.transform = `translateX(${parkX}px)`;
       paintScenery(layers, 0, 0);
+      placeCampus(ROAD_TOTAL);
       const started = performance.now();
       const tick = () => {
         const t = Math.min((performance.now() - started) / LOAD_DRIVE_MS, 1);
@@ -411,35 +461,39 @@ function driveTruck() {
     }
 
     const started = performance.now();
-    let last = started;
-    let worldX = 0;        // how far the landscape has scrolled
-    let ground = 0;        // distance the tyres have rolled (for wheel spin)
-    let prevTruckX = 0;
 
     const frame = (now) => {
       const elapsed = now - started;
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
       const t = Math.min(elapsed / LOAD_DRIVE_MS, 1);
 
-      // landscape streams right-to-left behind the truck
-      const v = worldSpeedAt(t);
-      worldX += v * dt;
-      paintScenery(layers, worldX, elapsed / 1000);
+      // landscape and university stream right-to-left behind the bus
+      const road = roadDistanceAt(t);
+      paintScenery(layers, road, elapsed / 1000);
+      placeCampus(road);
 
-      // the whole vehicle moves together; a tiny bob sells the bumps in the road
-      const x = truckXAt(t);
-      const bob = Math.sin(elapsed / 90) * 0.8 + Math.sin(elapsed / 37) * 0.35;
-      el.loadTruck.style.transform = `translate(${x.toFixed(1)}px, ${bob.toFixed(2)}px)`;
+      // the whole bus moves together; a tiny bob for the bumps in the road
+      // (it settles as the bus slows), and a small nose-dip while braking
+      const x = busXAt(t);
+      const speedShare = worldSpeedAt(t) / WORLD_SPEED;
+      const bob = (Math.sin(elapsed / 90) * 0.8 + Math.sin(elapsed / 37) * 0.35) * speedShare;
+      let tilt = 0;
+      if (t > BRAKE_START) {
+        const u = (t - BRAKE_START) / (1 - BRAKE_START);
+        tilt = Math.sin(u * Math.PI) * 1.4;           // dips forward, then settles level
+      }
+      el.loadTruck.style.transform =
+        `translate(${x.toFixed(1)}px, ${bob.toFixed(2)}px) rotate(${tilt.toFixed(2)}deg)`;
 
       // wheels turn by the real distance covered over the road
-      ground += v * dt + Math.max(0, x - prevTruckX);
-      prevTruckX = x;
+      const ground = road + x;
       const rotation = (ground / (2 * Math.PI * WHEEL_RADIUS_PX * svgScale)) * 360;
       paint(t, rotation % 360);
 
       if (t < 1) requestAnimationFrame(frame);
-      else resolve();
+      else {
+        el.loadTruck.style.transform = `translate(${parkX.toFixed(1)}px, 0px)`;
+        resolve();
+      }
     };
 
     requestAnimationFrame(frame);
@@ -449,9 +503,12 @@ function driveTruck() {
 function resetLoadingScreen() {
   el.load.classList.remove("is-on", "is-out");
   el.loadSeal.classList.remove("is-on");
+  el.loadTruck.classList.remove("is-parked");
   el.loadTruck.style.transform = "translateX(0)";
   el.loadWheelB.style.transform = "";
   el.loadWheelF.style.transform = "";
+  const campus = $("#signinCampus");
+  if (campus) campus.style.transform = "translateX(2000px)";
   paintScenery(sceneryLayers(), 0, 0);
   el.loadFill.style.width = "0%";
   el.loadPct.textContent = "0%";
@@ -470,11 +527,12 @@ async function runSigninLoader() {
 
   await driveTruck();
 
-  // the truck has arrived: confirm in the space it left behind
+  // the bus has arrived at the university: engine off, children wave
+  el.loadTruck.classList.add("is-parked");
   el.loadFill.style.width = "100%";
   el.loadPct.textContent = "100%";
   el.loadText.textContent = "Session ready";
-  el.loadSub.textContent = "Verification complete";
+  el.loadSub.textContent = "Arrived at Medhavi Skills University";
   el.loadSeal.classList.add("is-on");
 
   await wait(LOAD_CONFIRM_MS);
