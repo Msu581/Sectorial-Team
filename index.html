@@ -290,38 +290,223 @@
           </dl>
         </div>
 
-        <!-- signature: a specimen comparison record -->
-        <aside class="specimen reveal" aria-label="Illustration of a field-by-field comparison">
-          <div class="specimen__head">
-            <span>Specimen — field comparison</span>
-            <span class="specimen__key" aria-hidden="true">TR · PDF</span>
+        <!-- signature: a specimen comparison record, one panel per tool.
+             The panels cycle 01 → 06 → 01 (see the specimen script at the end of
+             this file). Edit a panel's rows here to change what it shows. -->
+        <aside class="specimen reveal" data-specimen aria-label="Illustration of what each tool checks" aria-roledescription="carousel">
+          <div class="specimen__deck">
+
+            <!-- TOOL 01 -->
+            <div class="specimen__panel is-active" data-label="Tool 01 · Marksheet vs TR" aria-hidden="false" role="group" aria-roledescription="slide" aria-label="Tool 01 of 06">
+              <div class="specimen__head">
+                <span>Specimen — field comparison</span>
+                <span class="specimen__key" aria-hidden="true">TR · PDF</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Field</span>
+                <span>Tabulated result</span>
+                <span>Gradesheet</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">Registration No.</span><span class="specimen__val">23BSC0148</span><span class="specimen__val specimen__val--b">23BSC0148</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Credit structure</span><span class="specimen__val">3-0-0</span><span class="specimen__val specimen__val--b">3-0-0</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">SGPA</span><span class="specimen__val">7.6</span><span class="specimen__val specimen__val--b">7.60</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">Total credit points</span><span class="specimen__val">218</span><span class="specimen__val specimen__val--b">218</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Mother's name</span><span class="specimen__val">Sunita Devi</span><span class="specimen__val specimen__val--b">blank</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">Course code</span><span class="specimen__val">MTL100 [T]</span><span class="specimen__val specimen__val--b">MTL100 [T]</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">04 matched</span>
+                <span class="specimen__tallyBad">02 flagged</span>
+              </div>
+
+              <p class="specimen__foot">
+                Every difference is written to the report with the field, both values and the kind of difference found.
+              </p>
+            </div>
+
+            <!-- TOOL 02 -->
+            <div class="specimen__panel" data-label="Tool 02 · White vs Original" aria-hidden="true" role="group" aria-roledescription="slide" aria-label="Tool 02 of 06">
+              <div class="specimen__head">
+                <span>Specimen — white vs original</span>
+                <span class="specimen__key" aria-hidden="true">WHITE · ORIG</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Field</span>
+                <span>White copy</span>
+                <span>Sealed original</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">Registration No.</span><span class="specimen__val">23BSC0148</span><span class="specimen__val specimen__val--b">23BSC0148</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Student name</span><span class="specimen__val">Rahul Kumar</span><span class="specimen__val specimen__val--b">Rahul Kumar</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">MTL100 grade</span><span class="specimen__val">A</span><span class="specimen__val specimen__val--b">A</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">SGPA</span><span class="specimen__val">7.60</span><span class="specimen__val specimen__val--b">7.60</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Percentage</span><span class="specimen__val">76.00</span><span class="specimen__val specimen__val--b">76.40</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="bad"><span class="specimen__field">Publication date</span><span class="specimen__val">12-07-2026</span><span class="specimen__val specimen__val--b">14-07-2026</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">04 matched</span>
+                <span class="specimen__tallyBad">02 flagged</span>
+              </div>
+
+              <p class="specimen__foot">
+                Each white-background copy is paired with its sealed original on registration number and compared field by field.
+              </p>
+            </div>
+
+            <!-- TOOL 03 -->
+            <div class="specimen__panel" data-label="Tool 03 · Consolidated Marksheet Checker" aria-hidden="true" role="group" aria-roledescription="slide" aria-label="Tool 03 of 06">
+              <div class="specimen__head">
+                <span>Specimen — consolidated audit</span>
+                <span class="specimen__key" aria-hidden="true">PDF · EXACT</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Check</span>
+                <span>Printed</span>
+                <span>Recomputed</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">Sem 1 credits</span><span class="specimen__val">22</span><span class="specimen__val specimen__val--b">22</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Sem 1 SGPA</span><span class="specimen__val">7.82</span><span class="specimen__val specimen__val--b">7.82</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Sem 2 SGPA</span><span class="specimen__val">8.10</span><span class="specimen__val specimen__val--b">8.09</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">CGPA</span><span class="specimen__val">7.95</span><span class="specimen__val specimen__val--b">7.95</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Percentage</span><span class="specimen__val">79.50</span><span class="specimen__val specimen__val--b">79.50</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Year of passing</span><span class="specimen__val">2026</span><span class="specimen__val specimen__val--b">2026</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">05 matched</span>
+                <span class="specimen__tallyBad">01 flagged</span>
+              </div>
+
+              <p class="specimen__foot">
+                Every figure is recomputed from the subject rows with exact fractions, so a value either matches or it does not.
+              </p>
+            </div>
+
+            <!-- TOOL 04 -->
+            <div class="specimen__panel" data-label="Tool 04 · Provisional Result" aria-hidden="true" role="group" aria-roledescription="slide" aria-label="Tool 04 of 06">
+              <div class="specimen__head">
+                <span>Specimen — provisional result</span>
+                <span class="specimen__key" aria-hidden="true">REG · IMP</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Subject</span>
+                <span>Regular TR</span>
+                <span>Improvement TR</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">MTL100 total</span><span class="specimen__val">32 F</span><span class="specimen__val specimen__val--b">48 P</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">CSL201 total</span><span class="specimen__val">61 P</span><span class="specimen__val specimen__val--b">—</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">PHY102 total</span><span class="specimen__val">28 F</span><span class="specimen__val specimen__val--b">31 F</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">HUL110 grace</span><span class="specimen__val">—</span><span class="specimen__val specimen__val--b">—</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">ELL105 grace</span><span class="specimen__val">W</span><span class="specimen__val specimen__val--b">—</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">Semesters loaded</span><span class="specimen__val">8</span><span class="specimen__val specimen__val--b">3</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">04 cleared</span>
+                <span class="specimen__tallyBad">02 blocking</span>
+              </div>
+
+              <p class="specimen__foot">
+                The better attempt is kept for each subject; an F still standing, or a W in any grace cell, blocks the provisional result.
+              </p>
+            </div>
+
+            <!-- TOOL 05 -->
+            <div class="specimen__panel" data-label="Tool 05 · Tr-Tru Eligibility" aria-hidden="true" role="group" aria-roledescription="slide" aria-label="Tool 05 of 06">
+              <div class="specimen__head">
+                <span>Specimen — semester eligibility</span>
+                <span class="specimen__key" aria-hidden="true">TR · TRU</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Semester</span>
+                <span>File</span>
+                <span>Grades</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">Semester 1</span><span class="specimen__val">TR</span><span class="specimen__val specimen__val--b">All P</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Semester 2</span><span class="specimen__val">Truscholar</span><span class="specimen__val specimen__val--b">All P</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Semester 3</span><span class="specimen__val">TR</span><span class="specimen__val specimen__val--b">MTL201 F</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">Semester 4</span><span class="specimen__val">Truscholar</span><span class="specimen__val specimen__val--b">All P</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Semester 5</span><span class="specimen__val">TR</span><span class="specimen__val specimen__val--b">All P</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Semester 6</span><span class="specimen__val">Truscholar</span><span class="specimen__val specimen__val--b">no grades</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">04 clear</span>
+                <span class="specimen__tallyBad">02 not eligible</span>
+              </div>
+
+              <p class="specimen__foot">
+                The student is matched across semesters by Enrollment No; one F, or a semester with no grades, makes them Not Eligible.
+              </p>
+            </div>
+
+            <!-- TOOL 06 -->
+            <div class="specimen__panel" data-label="Tool 06 · Marksheet vs TR + Improvement" aria-hidden="true" role="group" aria-roledescription="slide" aria-label="Tool 06 of 06">
+              <div class="specimen__head">
+                <span>Specimen — improvement re-check</span>
+                <span class="specimen__key" aria-hidden="true">PAGE 1 · 2</span>
+              </div>
+
+              <div class="specimen__cols" aria-hidden="true">
+                <span>Field</span>
+                <span>Recomputed</span>
+                <span>Gradesheet</span>
+                <span></span>
+              </div>
+
+              <ul class="specimen__rows">
+                <li class="ok"><span class="specimen__field">Exam type</span><span class="specimen__val">Supplementary</span><span class="specimen__val specimen__val--b">Supplementary</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">MTL100 marks</span><span class="specimen__val">48</span><span class="specimen__val specimen__val--b">48</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">MTL100 grade</span><span class="specimen__val">B</span><span class="specimen__val specimen__val--b">B</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="ok"><span class="specimen__field">Total marks</span><span class="specimen__val">628</span><span class="specimen__val specimen__val--b">628</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+                <li class="bad"><span class="specimen__field">Percentage</span><span class="specimen__val">62.80</span><span class="specimen__val specimen__val--b">61.20</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
+                <li class="ok"><span class="specimen__field">SGPA</span><span class="specimen__val">7.62</span><span class="specimen__val specimen__val--b">7.62</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
+              </ul>
+
+              <div class="specimen__tally" aria-hidden="true">
+                <span class="specimen__tallyOk">05 matched</span>
+                <span class="specimen__tallyBad">01 flagged</span>
+              </div>
+
+              <p class="specimen__foot">
+                Only subjects in the new TR are replaced; total, percentage and SGPA are recomputed from both TRs and re-checked.
+              </p>
+            </div>
           </div>
 
-          <div class="specimen__cols" aria-hidden="true">
-            <span>Field</span>
-            <span>Tabulated result</span>
-            <span>Gradesheet</span>
-            <span></span>
+          <!-- which tool is showing; each step fills while its panel is on screen -->
+          <div class="specimen__nav">
+            <span class="specimen__navLabel" data-spec-label aria-live="polite">Tool 01 · Marksheet vs TR</span>
+            <div class="specimen__steps">
+              <button type="button" class="specimen__step is-active" aria-current="true" data-spec-go="0" aria-label="Show tool 01"><span>01</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+              <button type="button" class="specimen__step" data-spec-go="1" aria-label="Show tool 02"><span>02</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+              <button type="button" class="specimen__step" data-spec-go="2" aria-label="Show tool 03"><span>03</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+              <button type="button" class="specimen__step" data-spec-go="3" aria-label="Show tool 04"><span>04</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+              <button type="button" class="specimen__step" data-spec-go="4" aria-label="Show tool 05"><span>05</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+              <button type="button" class="specimen__step" data-spec-go="5" aria-label="Show tool 06"><span>06</span><i class="specimen__stepBar" aria-hidden="true"></i></button>
+            </div>
           </div>
-
-          <ul class="specimen__rows">
-            <li class="ok"><span class="specimen__field">Registration No.</span><span class="specimen__val">23BSC0148</span><span class="specimen__val specimen__val--b">23BSC0148</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
-            <li class="ok"><span class="specimen__field">Credit structure</span><span class="specimen__val">3-0-0</span><span class="specimen__val specimen__val--b">3-0-0</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
-            <li class="bad"><span class="specimen__field">SGPA</span><span class="specimen__val">7.6</span><span class="specimen__val specimen__val--b">7.60</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
-            <li class="ok"><span class="specimen__field">Total credit points</span><span class="specimen__val">218</span><span class="specimen__val specimen__val--b">218</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
-            <li class="bad"><span class="specimen__field">Mother's name</span><span class="specimen__val">Sunita Devi</span><span class="specimen__val specimen__val--b">blank</span><span class="specimen__mark" aria-hidden="true">✕</span></li>
-            <li class="ok"><span class="specimen__field">Course code</span><span class="specimen__val">MTL100 [T]</span><span class="specimen__val specimen__val--b">MTL100 [T]</span><span class="specimen__mark" aria-hidden="true">✓</span></li>
-          </ul>
-
-          <div class="specimen__tally" aria-hidden="true">
-            <span class="specimen__tallyOk">04 matched</span>
-            <span class="specimen__tallyBad">02 flagged</span>
-          </div>
-
-          <p class="specimen__foot">
-            Every difference is written to the report with the field, both values
-            and the kind of difference found.
-          </p>
         </aside>
       </div>
     </section>
@@ -422,7 +607,7 @@
           </article>
 
           <!-- TOOL 03 -->
-          <article class="tool tool--secondary tool--wide reveal">
+          <article class="tool tool--secondary reveal">
             <div class="tool__index" aria-hidden="true">03</div>
             <div class="tool__body">
               <p class="tool__kicker">Consolidated transcript ↔ exact arithmetic</p>
@@ -527,7 +712,7 @@
           </article>
 
           <!-- TOOL 06 -->
-          <article class="tool tool--secondary tool--wide reveal">
+          <article class="tool tool--secondary reveal">
             <div class="tool__index" aria-hidden="true">06</div>
             <div class="tool__body">
               <p class="tool__kicker">Gradesheet ↔ TR, plus improvement / supplementary re-check</p>
@@ -905,6 +1090,93 @@
 </div>
 
 <script src="script.js"></script>
+<!-- specimen carousel: cycles the hero specimen through tools 01 → 06, then back to 01 -->
+<script>
+(function () {
+  var spec = document.querySelector("[data-specimen]");
+  if (!spec) return;
+
+  var panels = Array.prototype.slice.call(spec.querySelectorAll(".specimen__panel"));
+  var steps  = Array.prototype.slice.call(spec.querySelectorAll("[data-spec-go]"));
+  var label  = spec.querySelector("[data-spec-label]");
+  var app    = document.getElementById("app");
+  var DURATION = 5000;                       /* ms each tool stays on screen */
+  var reduce = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
+
+  var index = 0, elapsed = 0, last = null;
+  var hovering = false, focused = false, inView = false;
+
+  function show(n) {
+    index = (n + panels.length) % panels.length;
+    elapsed = 0;
+    panels.forEach(function (p, k) {
+      var on = k === index;
+      p.classList.toggle("is-active", on);
+      p.setAttribute("aria-hidden", on ? "false" : "true");
+    });
+    steps.forEach(function (b, k) {
+      var on = k === index;
+      b.classList.toggle("is-active", on);
+      if (on) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current");
+      b.style.setProperty("--p", "0");
+    });
+    if (label) label.textContent = panels[index].getAttribute("data-label");
+  }
+
+  function running() {
+    return inView && !hovering && !focused && !document.hidden && !reduce.matches;
+  }
+
+  function tick(t) {
+    if (last === null) last = t;
+    var dt = Math.min(t - last, 100);        /* no jump after a background tab */
+    last = t;
+    if (running()) {
+      elapsed += dt;
+      if (elapsed >= DURATION) show(index + 1);
+      else steps[index].style.setProperty("--p", (elapsed / DURATION).toFixed(4));
+    }
+    window.requestAnimationFrame(tick);
+  }
+
+  steps.forEach(function (b, k) {
+    b.addEventListener("click", function () { show(k); });
+    b.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      var next = (k + (e.key === "ArrowRight" ? 1 : -1) + steps.length) % steps.length;
+      show(next);
+      steps[next].focus();
+    });
+  });
+
+  /* pause while the reader is looking at or using the record */
+  spec.addEventListener("mouseenter", function () { hovering = true; });
+  spec.addEventListener("mouseleave", function () { hovering = false; });
+  spec.addEventListener("focusin",  function () { focused = true; });
+  spec.addEventListener("focusout", function (e) { if (!spec.contains(e.relatedTarget)) focused = false; });
+
+  /* only runs while the record is on screen (the portal is hidden until sign-in) */
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
+    }, { threshold: 0.25 }).observe(spec);
+  } else {
+    inView = true;
+  }
+
+  /* every sign-in starts again from tool 01 */
+  if (app && "MutationObserver" in window) {
+    new MutationObserver(function () {
+      if (app.hidden) show(0);
+    }).observe(app, { attributes: true, attributeFilter: ["hidden"] });
+  }
+
+  show(0);
+  window.requestAnimationFrame(tick);
+})();
+</script>
+
 <!-- seasonal background layer (add-on, never touches authentication) -->
 <script src="season.js"></script>
 </body>
